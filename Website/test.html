@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Data</title>
+</head>
+<body>
+    <h1>Drivers List</h1>
+    <ul id="drivers-list"></ul>
+
+    <script>
+        async function fetchDrivers() {
+            const response = await fetch('http://localhost:3000/api/drivers');
+            const data = await response.json();
+            const list = document.getElementById('drivers-list');
+
+            data.forEach(driver => {
+                const item = document.createElement('li');
+                item.textContent = `${driver.forename} ${driver.surname}`;
+                list.appendChild(item);
+            });
+        }
+
+        fetchDrivers();
+    </script>
+</body>
+</html>
