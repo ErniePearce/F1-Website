@@ -4,25 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supabase Data</title>
+    <script src="getfunctions.js" defer></script> <!-- Correctly linking JS file -->
 </head>
 <body>
     <h1>Drivers List</h1>
     <ul id="drivers-list"></ul>
 
     <script>
-        async function fetchDrivers() {
-            const response = await fetch('http://localhost:3000/api/drivers');
-            const data = await response.json();
-            const list = document.getElementById('drivers-list');
-
-            data.forEach(driver => {
-                const item = document.createElement('li');
-                item.textContent = `${driver.forename} ${driver.surname}`;
-                list.appendChild(item);
-            });
-        }
-
-        fetchDrivers();
+        // Ensure the function is available before calling it
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof fetchDrivers === "function") {
+                fetchDrivers();
+            } else {
+                console.error("fetchDrivers is not defined. Check if getfunctions.js is correctly linked.");
+            }
+        });
     </script>
 </body>
 </html>
