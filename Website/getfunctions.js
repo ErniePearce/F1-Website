@@ -21,3 +21,46 @@ async function fetchDrivers() {
         console.error("Error fetching drivers:", error);
     }
 }
+
+async function setDrivers(driverID) {
+    try {
+        // Ensure driverID is a valid number
+        const idToFind = Number(driverID);
+        if (isNaN(idToFind)) {
+            console.error("Invalid driver ID:", driverID);
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/api/drivers');
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+        const data = await response.json();
+
+        console.log("Driver ID input:", idToFind, "Type:", typeof idToFind);
+        console.log("Fetched Data:", data);
+
+        // Find the driver
+        const driver = data.find(d => Number(d.driverId) === idToFind);
+
+
+        if (!driver) {
+            console.error(`Driver with ID ${idToFind} not found.`);
+            return;
+        }
+
+
+        // Get elements and update values
+        document.getElementById('Dname').textContent = `${driver.forename} ${driver.surname}` || "N/A";
+        document.getElementById('Dnationality').textContent = driver.nationality || "N/A";
+        document.getElementById('Drdob').textContent = driver.dob || "N/A";
+        document.getElementById('Dteam').textContent = driver.team || "N/A";
+        document.getElementById('Drdescription').textContent = driver.description || "N/A";
+
+        console.log("Driver info updated:", driver);
+    } catch (error) {
+        console.error("Error fetching drivers:", error);
+    }
+}
+
+
+

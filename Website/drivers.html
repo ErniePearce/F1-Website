@@ -37,11 +37,11 @@
                 <div class="driver">
                     <img src="hamilton.jpg" alt="Lewis Hamilton">
                     <div class="driver-info">
-                        <h3>Lewis Hamilton</h3>
-                        <p><strong>Nationality:</strong> British</p>
-                        <p><strong>Date of Birth:</strong> January 7, 1985</p>
-                        <p><strong>Team:</strong> Mercedes</p>
-                        <p>One of the most successful drivers in F1 history, with multiple World Championships and numerous race wins.</p>
+                        <h3 id = Dname>Lewis Hamilton</h3>
+                        <p id="Dnationality"><strong>Nationality:</strong> British</p>
+                        <p id = Drdob><strong>Date of Birth:</strong> January 7, 1985</p>
+                        <p id = Dteam><strong>Team:</strong> Mercedes</p>
+                        <p id = Drdescription>One of the most successful drivers in F1 history, with multiple World Championships and numerous race wins.</p>
                     </div>
                 </div>
             </div>
@@ -61,6 +61,15 @@
                 fetchDrivers(); // Call fetchDrivers() to populate the drivers list
             } else {
                 console.error("fetchDrivers is not defined. Ensure it's loaded correctly.");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure setDrivers() is called after the page content is loaded
+            if (typeof fetchDrivers === "function") {
+                setDrivers(2); // Call fetchDrivers() to populate the drivers list
+            } else {
+                console.error("setDrivers is not defined. Ensure it's loaded correctly.");
             }
         });
     </script>
