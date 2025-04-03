@@ -1,5 +1,3 @@
-// getfunctions.js
-
 async function fetchDrivers() {
     try {
         const response = await fetch('http://localhost:3000/api/drivers');
@@ -8,13 +6,20 @@ async function fetchDrivers() {
         // Select the scroll-box where the driver list will be displayed
         const scrollBox = document.getElementById('scroll-box');
 
-        // Clear the scroll-box before appending new content (in case there is existing content)
+        // Clear previous content before appending new data
         scrollBox.innerHTML = '';
 
-        // Loop through the data and create a list of driver names
+        // Loop through the data and create a list of clickable driver names
         data.forEach(driver => {
             const driverElement = document.createElement('p');
             driverElement.textContent = `${driver.forename} ${driver.surname}`;
+            driverElement.classList.add('driver-name'); // Add a class for styling
+
+            // Add click event listener to output driverID
+            driverElement.addEventListener('click', () => {
+                setDrivers(driver.driverId);
+            });
+
             scrollBox.appendChild(driverElement); // Append each driver to the scroll-box
         });
     } catch (error) {
@@ -35,9 +40,6 @@ async function setDrivers(driverID) {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
-
-        console.log("Driver ID input:", idToFind, "Type:", typeof idToFind);
-        console.log("Fetched Data:", data);
 
         // Find the driver
         const driver = data.find(d => Number(d.driverId) === idToFind);
