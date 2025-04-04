@@ -18,6 +18,7 @@ async function fetchDrivers() {
             // Add click event listener to output driverID
             driverElement.addEventListener('click', () => {
                 setDrivers(driver.driverId);
+                fetchWikipediaDataFromURL(driver.url); // Use stored Wikipedia link
             });
 
             scrollBox.appendChild(driverElement); // Append each driver to the scroll-box
@@ -63,6 +64,49 @@ async function setDrivers(driverID) {
         console.error("Error fetching drivers:", error);
     }
 }
+
+
+
+async function fetchWikipediaDataFromURL(wikiURL) {
+    try {
+        // Extract the Wikipedia page title from the URL
+        const pageTitle = wikiURL.split("/wiki/")[1];
+
+        if (!pageTitle) {
+            console.error("Invalid Wikipedia URL");
+            return;
+        }
+
+        // Wikipedia API URL to get introduction and image
+        const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${pageTitle}&prop=extracts|pageimages&exintro=true&explaintext=true&pithumbsize=500`;
+
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // Extract page data
+        const pages = data.query.pages;
+        const page = Object.values(pages)[0];
+
+        if (page.missing) {
+            console.warn(`Wikipedia page not found for ${pageTitle}`);
+            return;
+        }
+
+        const introText = page.extract || "No introduction available.";
+        const imageUrl = page.thumbnail ? page.thumbnail.source : "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"; // Default image
+
+        console.log("Introduction:", introText);
+        console.log("Image URL:", imageUrl);
+
+        // Display the fetched data on the webpage
+        document.getElementById("Drdescription").textContent = introText;
+        document.getElementById("driver-img").src = imageUrl;
+    } catch (error) {
+        console.error("Error fetching Wikipedia data:", error);
+    }
+}
+
+
 
 
 

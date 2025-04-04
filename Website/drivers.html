@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 Drivers</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="getfunctions.js" defer></script>
+    <script src="drivers.js" defer></script>
     <script src="WikiMediaApi.js" defer></script>
 </head>
 <body>
@@ -35,13 +35,13 @@
             
             <div class="drivers">
                 <div class="driver">
-                    <img src="hamilton.jpg" alt="Lewis Hamilton">
+                    <img id="driver-img" src="" alt="Driver Image" width="200">
                     <div class="driver-info">
                         <h3 id = Dname>Lewis Hamilton</h3>
                         <p id="Dnationality"><strong>Nationality:</strong> British</p>
                         <p id = Drdob><strong>Date of Birth:</strong> January 7, 1985</p>
                         <p id = Dteam><strong>Team:</strong> Mercedes</p>
-                        <p id = Drdescription>One of the most successful drivers in F1 history, with multiple World Championships and numerous race wins.</p>
+                        <p id = Drdescription></p>
                     </div>
                 </div>
             </div>
@@ -67,10 +67,23 @@
         document.addEventListener("DOMContentLoaded", function () {
             // Ensure setDrivers() is called after the page content is loaded
             if (typeof fetchDrivers === "function") {
-                setDrivers(2); // Call fetchDrivers() to populate the drivers list
+                setDrivers(1);
             } else {
                 console.error("setDrivers is not defined. Ensure it's loaded correctly.");
             }
+
+            
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure setDrivers() is called after the page content is loaded
+            if (typeof fetchWikipediaDataFromURL === "function") {
+                fetchWikipediaDataFromURL('http://en.wikipedia.org/wiki/Lewis_Hamilton');
+            } else {
+                console.error("setDrivers is not defined. Ensure it's loaded correctly.");
+            }
+
+            
         });
     </script>
 </body>
