@@ -1,110 +1,97 @@
+let constructorData = []; // Store constructors globally
+
 async function fetchDrivers() {
     try {
         const response = await fetch('http://localhost:3000/api/constructors');
-        const data = await response.json();
+        constructorData = await response.json();
 
-        // Select the scroll-box where the driver list will be displayed
-        const scrollBox = document.getElementById('scroll-box');
+        renderConstructors(constructorData); // Initial render of all constructors
 
-        // Clear previous content before appending new data
-        scrollBox.innerHTML = '';
-
-        // Loop through the data and create a list of clickable driver names
-        data.forEach(constructor => {
-            const driverElement = document.createElement('p');
-            driverElement.textContent = `${constructor.name}`;
-            driverElement.classList.add('driver-name'); // Add a class for styling
-
-            // Add click event listener to output driverID
-            driverElement.addEventListener('click', () => {
-                setDrivers(constructor.constructorId);
-                fetchWikipediaDataFromURL(constructor.url); // Use stored Wikipedia link
-            });
-
-            scrollBox.appendChild(driverElement); // Append each driver to the scroll-box
+        // Set up search bar event listener
+        const searchBar = document.querySelector('.search-bar');
+        searchBar.addEventListener('input', () => {
+            const searchTerm = searchBar.value.toLowerCase();
+            const filtered = constructorData.filter(constructor =>
+                constructor.name.toLowerCase().includes(searchTerm)
+            );
+            renderConstructors(filtered);
         });
     } catch (error) {
-        console.error("Error fetching drivers:", error);
+        console.error("Error fetching constructors:", error);
     }
 }
 
-async function setDrivers(constructorID) {
+function renderConstructors(data) {
+    const scrollBox = document.getElementById('scroll-box');
+    scrollBox.innerHTML = ''; // Clear previous results
+
+    data.forEach(constructor => {
+        const constructorElement = document.createElement('p');
+        constructorElement.textContent = constructor.name;
+        constructorElement.classList.add('driver-name'); // Reusing class
+
+        constructorElement.addEventListener('click', () => {
+            setDrivers(constructor.constructorId);
+            fetchWikipediaDataFromURL(constructor.url);
+        });
+
+        scrollBox.appendChild(constructorElement);
+    });
+}
+
+async function setDrivers(constructorId) {
     try {
-        // Ensure driverID is a valid number
         const idToFind = Number(constructorId);
         if (isNaN(idToFind)) {
-            console.error("Invalid driver ID:", constructorID);
+            console.error("Invalid constructor ID:", constructorId);
             return;
         }
 
         const response = await fetch('http://localhost:3000/api/constructors');
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
         const data = await response.json();
 
-        // Find the driver
-        const constructor = data.find(d => Number(d.constructorId) === idToFind);
-
-
+        const constructor = data.find(c => Number(c.constructorId) === idToFind);
         if (!constructor) {
-            console.error(`Driver with ID ${idToFind} not found.`);
+            console.error(`Constructor with ID ${idToFind} not found.`);
             return;
         }
 
-
-        // Get elements and update values
-        document.getElementById('Dname').textContent = `${constructor.name}` || "N/A";
+        document.getElementById('Dname').textContent = constructor.name || "N/A";
         document.getElementById('Dnationality').textContent = constructor.nationality || "N/A";
         document.getElementById('Drdescription').textContent = constructor.description || "N/A";
 
-        console.log("Driver info updated:", constructor);
+        console.log("Constructor info updated:", constructor);
     } catch (error) {
-        console.error("Error fetching drivers:", error);
+        console.error("Error setting constructor:", error);
     }
 }
 
-
-
 async function fetchWikipediaDataFromURL(wikiURL) {
     try {
-        // Extract the Wikipedia page title from the URL
         const pageTitle = wikiURL.split("/wiki/")[1];
-
         if (!pageTitle) {
             console.error("Invalid Wikipedia URL");
             return;
         }
 
-        // Wikipedia API URL to get introduction and image
         const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=${pageTitle}&prop=extracts|pageimages&exintro=true&explaintext=true&pithumbsize=500`;
-
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        // Extract page data
         const pages = data.query.pages;
         const page = Object.values(pages)[0];
-
         if (page.missing) {
             console.warn(`Wikipedia page not found for ${pageTitle}`);
             return;
         }
 
         const introText = page.extract || "No introduction available.";
-        const imageUrl = page.thumbnail ? page.thumbnail.source : "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"; // Default image
+        const imageUrl = page.thumbnail ? page.thumbnail.source : "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 
-        console.log("Introduction:", introText);
-        console.log("Image URL:", imageUrl);
-
-        // Display the fetched data on the webpage
         document.getElementById("Drdescription").textContent = introText;
         document.getElementById("driver-img").src = imageUrl;
     } catch (error) {
         console.error("Error fetching Wikipedia data:", error);
     }
 }
-
-
-
-
-

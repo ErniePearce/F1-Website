@@ -23,6 +23,13 @@ app.get('/api/drivers', async (req, res) => {
     res.json(data);
 });
 
+app.get('/api/constructors', async (req, res) => {
+    const { data, error } = await supabase.from('constructors').select('*');
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
