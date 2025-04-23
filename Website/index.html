@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formula 1 Fan Zone</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
     <header>
@@ -14,18 +14,20 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="drivers.html">Drivers</a></li>
-                    <li><a href="races.html">Races</a></li>
-                    <li><a href="cars.html">Cars</a></li>
-                    <li><a href="championships.html">Championships</a></li>
+                    <li><a href="circuits.html">Circuits</a></li>
+                    <li><a href="constructors.html">Constructors</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="intro">
-            <h2>Welcome to the Formula 1 Fan Zone!</h2>
-            <p>Your go-to source for all things Formula 1, including drivers, cars, races, and more!</p>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Welcome to the Formula 1 Fan Zone!</h2>
+                <p>Your ultimate source for everything Formula 1 – drivers, teams, races, and more!</p>
+                <a href="drivers.html" class="cta-btn">Explore Drivers</a>
+            </div>
         </section>
 
         <section class="recent-news">
@@ -38,10 +40,31 @@
         </section>
 
         <section class="featured">
-            <h3>Featured Driver of the Month: Charles Leclerc</h3>
-            <img src="leclerc.jpg" alt="Charles Leclerc">
-            <p>Learn more about Charles Leclerc, Ferrari’s rising star!</p>
-            <a href="drivers.html">Read More</a>
+            <div class="featured-content">
+                <h3>Featured Driver of the Month: Charles Leclerc</h3>
+                <img src="leclerc.jpg" alt="Charles Leclerc" class="featured-img">
+                <p>Learn more about Charles Leclerc, Ferrari’s rising star!</p>
+                <a href="drivers.html" class="cta-btn">Read More</a>
+            </div>
+        </section>
+
+        <section class="info">
+            <h3>What's New in F1?</h3>
+            <p>Stay tuned for updates on the latest races, car launches, and all things F1!</p>
+            <div class="info-images">
+                <div class="info-img">
+                    <img src="image1.jpg" alt="F1 Image 1">
+                    <p>2025 Season Highlights</p>
+                </div>
+                <div class="info-img">
+                    <img src="image2.jpg" alt="F1 Image 2">
+                    <p>Upcoming Races</p>
+                </div>
+                <div class="info-img">
+                    <img src="image3.jpg" alt="F1 Image 3">
+                    <p>Behind the Scenes</p>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -50,5 +73,6 @@
             <p>&copy; 2025 Formula 1 Fan Zone | All Rights Reserved</p>
         </div>
     </footer>
+
 </body>
 </html>

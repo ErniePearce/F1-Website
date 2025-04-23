@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Drivers</title>
+    <title>F1 Constructors</title>
     <link rel="stylesheet" href="styles.css">
     <script src="constructors.js" defer></script>
     <script src="WikiMediaApi.js" defer></script>
@@ -16,9 +16,8 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="drivers.html">Drivers</a></li>
-                    <li><a href="races.html">Races</a></li>
-                    <li><a href="cars.html">Cars</a></li>
-                    <li><a href="championships.html">Championships</a></li>
+                    <li><a href="circuits.html">circuits</a></li>
+                    <li><a href="constructors.html">Constructors</a></li>
                 </ul>
             </nav>
         </div>
@@ -28,18 +27,18 @@
         <div class="driver-container">
             <div class="search-container">
                 <input type="text" class="search-bar" id="search-input" placeholder="Search...">
-                <div class="scroll-box" id="scroll-box"> <!-- Added id to target this container -->
-                    <!-- Drivers will be dynamically added here -->
+                <div class="scroll-box" id="scroll-box">
+                    <!-- Constructors will be dynamically added here -->
                 </div>
             </div>
-            
+
             <div class="drivers">
                 <div class="driver">
                     <img id="driver-img" src="" alt="Driver Image" width="200">
                     <div class="driver-info">
-                        <h3 id = Dname>Mclaren</h3>
+                        <h3 id="Dname">Mclaren</h3>
                         <p id="Dnationality"><strong>Nationality:</strong> British</p>
-                        <p id = Drdescription></p>
+                        <p id="Drdescription"></p>
                     </div>
                 </div>
             </div>
@@ -54,34 +53,11 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Ensure fetchDrivers() is called after the page content is loaded
             if (typeof fetchDrivers === "function") {
-                fetchDrivers(); // Call fetchDrivers() to populate the drivers list
+                fetchDrivers();
             } else {
                 console.error("fetchDrivers is not defined. Ensure it's loaded correctly.");
             }
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Ensure setDrivers() is called after the page content is loaded
-            if (typeof fetchDrivers === "function") {
-                setDrivers(1);
-            } else {
-                console.error("setDrivers is not defined. Ensure it's loaded correctly.");
-            }
-
-            
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            // Ensure setDrivers() is called after the page content is loaded
-            if (typeof fetchWikipediaDataFromURL === "function") {
-                fetchWikipediaDataFromURL('http://en.wikipedia.org/wiki/Lewis_Hamilton');
-            } else {
-                console.error("setDrivers is not defined. Ensure it's loaded correctly.");
-            }
-
-            
         });
     </script>
 </body>

@@ -4,12 +4,18 @@ let allDrivers = []; // Store all drivers globally for filtering
 async function fetchDrivers() {
     try {
         const response = await fetch('http://localhost:3000/api/drivers');
-        const data = await response.json();
+        allDrivers = await response.json();
 
-        allDrivers = data; // Save for filtering
         renderDriverList(allDrivers); // Show full list initially
 
-        // Setup input event for filtering
+        // Auto-select and show the first driver
+        if (allDrivers.length > 0) {
+            const firstDriver = allDrivers[0];
+            setDrivers(firstDriver.driverId);
+            fetchWikipediaDataFromURL(firstDriver.url);
+        }
+
+        // Set up live search filter
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', function () {
             const query = this.value.toLowerCase();
@@ -27,7 +33,7 @@ async function fetchDrivers() {
 // Render driver list into scroll-box
 function renderDriverList(driverList) {
     const scrollBox = document.getElementById('scroll-box');
-    scrollBox.innerHTML = ''; // Clear existing list
+    scrollBox.innerHTML = '';
 
     if (driverList.length === 0) {
         const noResult = document.createElement('p');
@@ -46,7 +52,7 @@ function renderDriverList(driverList) {
             setDrivers(driver.driverId);
             fetchWikipediaDataFromURL(driver.url);
             document.getElementById('search-input').value = ''; // Clear search
-            renderDriverList(allDrivers); // Reset list
+            renderDriverList(allDrivers); // Reset full list
         });
 
         scrollBox.appendChild(driverElement);
@@ -62,28 +68,35 @@ async function setDrivers(driverID) {
             return;
         }
 
-        const response = await fetch('http://localhost:3000/api/drivers');
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-        const data = await response.json();
-        const driver = data.find(d => Number(d.driverId) === idToFind);
-
+        const driver = allDrivers.find(d => Number(d.driverId) === idToFind);
         if (!driver) {
             console.error(`Driver with ID ${idToFind} not found.`);
             return;
         }
 
+        // Format date of birth from ISO string to dd/mm/yyyy
+        let formattedDOB = "N/A";
+        if (driver.dob) {
+            const dateObj = new Date(driver.dob);
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = dateObj.getFullYear();
+            formattedDOB = `${day}/${month}/${year}`;
+        }
+
         document.getElementById('Dname').textContent = `${driver.forename} ${driver.surname}` || "N/A";
-        document.getElementById('Dnationality').textContent = driver.nationality || "N/A";
-        document.getElementById('Drdob').textContent = driver.dob || "N/A";
-        document.getElementById('Dteam').textContent = driver.team || "N/A";
+        document.getElementById('Dnationality').textContent = `Nationality: ${driver.nationality || "N/A"}`;
+        document.getElementById('Drdob').textContent = `Date of Birth: ${formattedDOB}`;
+        document.getElementById('Dteam').textContent = `Team: ${driver.team || "N/A"}`;
         document.getElementById('Drdescription').textContent = driver.description || "N/A";
 
         console.log("Driver info updated:", driver);
     } catch (error) {
-        console.error("Error fetching drivers:", error);
+        console.error("Error setting driver:", error);
     }
 }
+
+
 
 // Fetch bio + image from Wikipedia
 async function fetchWikipediaDataFromURL(wikiURL) {

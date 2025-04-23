@@ -29,6 +29,12 @@ app.get('/api/constructors', async (req, res) => {
     res.json(data);
 });
 
+app.get('/api/circuits', async (req, res) => {
+    const { data, error } = await supabase.from('circuits').select('*');
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
 
 // Start Server
 const PORT = process.env.PORT || 3000;

@@ -7,6 +7,13 @@ async function fetchDrivers() {
 
         renderConstructors(constructorData); // Initial render of all constructors
 
+        // Automatically select and display the first constructor
+        if (constructorData.length > 0) {
+            const firstConstructor = constructorData[0];
+            setDrivers(firstConstructor.constructorId);
+            fetchWikipediaDataFromURL(firstConstructor.url);
+        }
+
         // Set up search bar event listener
         const searchBar = document.querySelector('.search-bar');
         searchBar.addEventListener('input', () => {
@@ -58,7 +65,7 @@ async function setDrivers(constructorId) {
         }
 
         document.getElementById('Dname').textContent = constructor.name || "N/A";
-        document.getElementById('Dnationality').textContent = constructor.nationality || "N/A";
+        document.getElementById('Dnationality').textContent = `Nationality: ${constructor.nationality || "N/A"}`;
         document.getElementById('Drdescription').textContent = constructor.description || "N/A";
 
         console.log("Constructor info updated:", constructor);

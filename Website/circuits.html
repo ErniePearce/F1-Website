@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Drivers</title>
+    <title>F1 Circuits</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="drivers.js" defer></script>
+    <script src="circuits.js" defer></script>
     <script src="WikiMediaApi.js" defer></script>
 </head>
 <body>
@@ -26,20 +26,17 @@
     <main>
         <div class="driver-container">
             <div class="search-container">
-                <input type="text" class="search-bar" id="search-input" placeholder="Search...">
-                <div class="scroll-box" id="scroll-box">
-                    <!-- Drivers will be dynamically added here -->
-                </div>
+                <input type="text" class="search-bar" id="search-input" placeholder="Search Circuits...">
+                <div class="scroll-box" id="scroll-box"></div>
             </div>
             
             <div class="drivers">
                 <div class="driver">
-                    <img id="driver-img" src="" alt="Driver Image" width="200">
+                    <img id="driver-img" src="" alt="Circuit Image" width="200">
                     <div class="driver-info">
-                        <h3 id="Dname">Lewis Hamilton</h3>
-                        <p id="Dnationality"><strong>Nationality:</strong> British</p>
-                        <p id="Drdob"><strong>Date of Birth:</strong> January 7, 1985</p>
-                        <p id="Dteam"><strong>Team:</strong> Mercedes</p>
+                        <h3 id="Dname">Circuit Name</h3>
+                        <p id="Dlocation"><strong>Location:</strong> </p>
+                        <p id="Dcountry"><strong>Country:</strong> </p>
                         <p id="Drdescription"></p>
                     </div>
                 </div>
@@ -54,11 +51,17 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof fetchDrivers === "function") {
-                fetchDrivers();
-            } else {
-                console.error("fetchDrivers is not defined. Ensure it's loaded correctly.");
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof fetchCircuits === "function") {
+                fetchCircuits();
+            }
+
+            if (typeof setCircuit === "function") {
+                setCircuit(1);
+            }
+
+            if (typeof fetchWikipediaDataFromURL === "function") {
+                fetchWikipediaDataFromURL('http://en.wikipedia.org/wiki/Circuit_de_Monaco');
             }
         });
     </script>
